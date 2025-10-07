@@ -1,0 +1,153 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema m5prog
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema m5prog
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `m5prog` DEFAULT CHARACTER SET utf8 ;
+-- -----------------------------------------------------
+-- Schema dbfirst
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema dbfirst
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `dbfirst` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `m5prog` ;
+
+-- -----------------------------------------------------
+-- Table `m5prog`.`adres`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `m5prog`.`adres` ;
+
+CREATE TABLE IF NOT EXISTS `m5prog`.`adres` (
+  `adresID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `straat` VARCHAR(100) NOT NULL,
+  `huisnummer` VARCHAR(100) NOT NULL,
+  `postcode` VARCHAR(6) NOT NULL,
+  `plaatsnaam` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`adresID`),
+  UNIQUE INDEX `idadres_UNIQUE` (`adresID` ASC) VISIBLE,
+  UNIQUE INDEX `adrescol_UNIQUE` (`straat` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `m5prog`.`persoon`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `m5prog`.`persoon` ;
+
+CREATE TABLE IF NOT EXISTS `m5prog`.`persoon` (
+  `Primary key` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `een telefoonnummer,` VARCHAR(15) NOT NULL,
+  `voornaam` VARCHAR(50) NOT NULL,
+  `achternaam` VARCHAR(50) NOT NULL,
+  `geboorte datum,` DATE NOT NULL,
+  `geslacht` CHAR(1) NOT NULL,
+  `geboorte stad,` VARCHAR(50) NOT NULL,
+  `nationaliteit` VARCHAR(50) NOT NULL,
+  `adres_adresID` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`Primary key`),
+  UNIQUE INDEX `idpersoon_UNIQUE` (`Primary key` ASC) VISIBLE,
+  INDEX `fk_persoon_adres_idx` (`adres_adresID` ASC) VISIBLE,
+  CONSTRAINT `fk_persoon_adres`
+    FOREIGN KEY (`adres_adresID`)
+    REFERENCES `m5prog`.`adres` (`adresID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `m5prog`.`klmvluchten`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `m5prog`.`klmvluchten` ;
+
+CREATE TABLE IF NOT EXISTS `m5prog`.`klmvluchten` (
+  `Vlucht` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `vertrektijd` VARCHAR(20) NOT NULL,
+  `aankomst tijd` VARCHAR(20) NOT NULL,
+  `vertrek vluchthaven` VARCHAR(35) NOT NULL,
+  `aankomst vlucht haven` VARCHAR(55) NOT NULL,
+  PRIMARY KEY (`Vlucht`),
+  UNIQUE INDEX `Vlucht_UNIQUE` (`Vlucht` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `m5prog`.`table1`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `m5prog`.`table1` ;
+
+CREATE TABLE IF NOT EXISTS `m5prog`.`table1` (
+)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `m5prog`.`Personeel`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `m5prog`.`Personeel` ;
+
+CREATE TABLE IF NOT EXISTS `m5prog`.`Personeel` (
+  `idPersoneel` INT NOT NULL,
+  `naam` VARCHAR(45) NOT NULL,
+  `rol` VARCHAR(45) NULL,
+  PRIMARY KEY (`idPersoneel`),
+  UNIQUE INDEX `naam_UNIQUE` (`naam` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `m5prog`.`Personeel_has_klmvluchten`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `m5prog`.`Personeel_has_klmvluchten` ;
+
+CREATE TABLE IF NOT EXISTS `m5prog`.`Personeel_has_klmvluchten` (
+  `Personeel_idPersoneel` INT NOT NULL,
+  `klmvluchten_Vlucht` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`Personeel_idPersoneel`, `klmvluchten_Vlucht`),
+  INDEX `fk_Personeel_has_klmvluchten_klmvluchten1_idx` (`klmvluchten_Vlucht` ASC) VISIBLE,
+  INDEX `fk_Personeel_has_klmvluchten_Personeel1_idx` (`Personeel_idPersoneel` ASC) VISIBLE,
+  CONSTRAINT `fk_Personeel_has_klmvluchten_Personeel1`
+    FOREIGN KEY (`Personeel_idPersoneel`)
+    REFERENCES `m5prog`.`Personeel` (`idPersoneel`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Personeel_has_klmvluchten_klmvluchten1`
+    FOREIGN KEY (`klmvluchten_Vlucht`)
+    REFERENCES `m5prog`.`klmvluchten` (`Vlucht`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+USE `dbfirst` ;
+
+-- -----------------------------------------------------
+-- Table `dbfirst`.`bordspellen`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `dbfirst`.`bordspellen` ;
+
+CREATE TABLE IF NOT EXISTS `dbfirst`.`bordspellen` (
+  `idbordspellen` INT NOT NULL AUTO_INCREMENT,
+  `naam` VARCHAR(250) NOT NULL,
+  `aantal spelers` INT NOT NULL,
+  `beschrijfing` VARCHAR(500) NOT NULL,
+  `coop` INT NOT NULL,
+  PRIMARY KEY (`idbordspellen`),
+  UNIQUE INDEX `idbordspellen_UNIQUE` (`idbordspellen` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
